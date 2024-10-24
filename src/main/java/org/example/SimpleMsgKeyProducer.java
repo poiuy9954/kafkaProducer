@@ -1,21 +1,16 @@
 package org.example;
 
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.protocol.types.Field;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Properties;
-import java.util.stream.IntStream;
 
-public class SimpleProducer {
-    private static final Logger log = LoggerFactory.getLogger(SimpleProducer.class);
+public class SimpleMsgKeyProducer {
+    private static final Logger log = LoggerFactory.getLogger(SimpleMsgKeyProducer.class);
     private final static String TOPIC_NAME = "test1"; //send TOPIC 명
     private final static String BOOTSTRAP_SERVERS = "localhost:9092"; //Kafka cluster 서버
 
@@ -27,7 +22,7 @@ public class SimpleProducer {
 
         KafkaProducer<String,String> producer = new KafkaProducer<>(config); //Kafka Producer 인스턴스 생성(config 입력)
         String messageValue = "안녕하세요메세지테스트입니다."; //보낼 메세지
-        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, messageValue); //Kafka record 전송및 생성 인스턴스
+        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC_NAME, "msgKey","23"); //Kafka record 전송및 생성 인스턴스
         producer.send(record); //실제 전송하진않고 배치에 포함되게 하는것인듯
         log.info("{}", record);
         producer.flush(); //실제 전송하는 로직(배치형식으로 내부버퍼에 저장했다가 전송함 몇개가 한계일까?) 및 flush 하는듯
